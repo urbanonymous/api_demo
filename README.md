@@ -11,6 +11,7 @@ The purpose of this API is to handle files from the users. Allowing uploads and 
 ## API routes
 
 The API has 6 routes:
+
 - POST /auth - To obtain a token for interacting with the API.
 - GET /me - Returns all files on the user space.
 - POST /me - Receives a file and stores in the user space.
@@ -18,9 +19,7 @@ The API has 6 routes:
 - GET /f/:file_id/share - Returns a short URL to download the file.
 - GET /s/:share_url - Returns the file
 
-For more documentation, see the OpenAPI spec at http://localhost:8000/docs
-
-
+For more documentation, read the OpenAPI spec at http://localhost:8000/docs
 
 ## Run tests
 
@@ -32,7 +31,7 @@ TODO:
 Files related to application are in the ``app`` directory.
 Application parts are:
 
-```
+```txt
 api
 ├── auth              - auth related deps and routes.
 │   ├── deps          - dependencies for routes with auth.
@@ -46,7 +45,6 @@ api
 └── main.py           - FastAPI application creation.
 ```
 
-## TODO:
+## TODO
 
 - Add locks to the database, filesystem on reorganizations of duplicates / overwrites
-

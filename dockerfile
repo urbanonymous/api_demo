@@ -1,7 +1,5 @@
 FROM tiangolo/uvicorn-gunicorn-fastapi:python3.8
 
-RUN pip install --no-cache-dir fastapi
-
 WORKDIR /app/
 
 # Install Poetry
@@ -10,8 +8,13 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-
     ln -s /opt/poetry/bin/poetry && \
     poetry config virtualenvs.create false
 
-# Copy poetry.lock* in case it doesn't exist in the repo
+# Copy poetry.lock* and pyproject.toml
 COPY ./app/pyproject.toml ./app/poetry.lock* /app/
 
+# Allow installing dev dependencies to run tests
+ARG INSTALL_DEV=false
+RUN bash -c "if [ $TEST_ENV == 'true' ] ; then poetry install --no-root ; else poetry install --no-root --no-dev ; fi"
+
+# Copy the rest of the project
 COPY ./app /app
 ENV PYTHONPATH=/app

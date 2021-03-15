@@ -1,7 +1,5 @@
 """ Settings singleton that gets autocompleted from env vars """
-import secrets
 from pydantic import BaseSettings
-
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "99files.com"

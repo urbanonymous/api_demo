@@ -17,6 +17,7 @@ from fastapi.security.utils import get_authorization_scheme_param
 from starlette.requests import Request
 from starlette.status import HTTP_401_UNAUTHORIZED
 from fastapi.security.http import HTTPBase
+
 class HTTPAuthorizationCredentials(BaseModel):
     scheme: str
     credentials: str
@@ -32,7 +33,11 @@ def get_token(request: Request) -> Optional[str]:
         )
     return param
 
-def get_user_access_token(token: str = Depends(get_token)) -> Optional[TokenInDB]:
+def get_datetime_now():
+    """ This function allows to mock the current time at testing """
+    return datetime.now()
+
+def get_user_access_token(token: str = Depends(get_token), datetime_now = Depends(get_datetime_now)) -> Optional[TokenInDB]:
     """Returns the token information from db of a token.
 
     As this demo doesn't follow OAuth2, and the token doesn't have any data inside
@@ -40,9 +45,10 @@ def get_user_access_token(token: str = Depends(get_token)) -> Optional[TokenInDB
 
     Ideally here we would decode the signed jwt to extract information about the token owner.
     Args:
-        token (str, optional): 
-
+        token (str, optional) 
+        datetime_now
     """
+
     # Check that the token exists
     token_data = db["users"][settings.DEMO_USER_ID]["access_tokens"].get(token)
     if not token_data:
@@ -52,8 +58,7 @@ def get_user_access_token(token: str = Depends(get_token)) -> Optional[TokenInDB
         )
 
     # Validate the expiration date
-    print(datetime.now(), token_data.expires_at)
-    if datetime.now() >= token_data.expires_at:
+    if datetime_now >= token_data.expires_at:
         raise HTTPException(
             status_code=HTTP_401_UNAUTHORIZED,
             detail="token expired"
@@ -125,21 +130,17 @@ class CustomHTTPBearer(HTTPBase):
         authorization: str = request.headers.get("Authorization")
         scheme, credentials = get_authorization_scheme_param(authorization)
         if not (authorization and scheme and credentials):
-            if self.auto_error:
-                raise HTTPException(
-                    status_code=HTTP_401_UNAUTHORIZED,
-                    detail="Not authenticated",
-                    headers={"WWW-Authenticate": "Bearer"},
-                )
-            else:
-                return None
+            raise HTTPException(
+                status_code=HTTP_401_UNAUTHORIZED,
+                detail="Not authenticated",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
         if scheme.lower() != "bearer":
-            if self.auto_error:
-                raise HTTPException(
-                    status_code=HTTP_401_UNAUTHORIZED,
-                    detail="Not authenticated",
-                    headers={"WWW-Authenticate": "Bearer"},
-                )
-            else:
-                return None
+            raise HTTPException(
+                status_code=HTTP_401_UNAUTHORIZED,
+                detail="Not authenticated",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
         return HTTPAuthorizationCredentials(scheme=scheme, credentials=credentials)

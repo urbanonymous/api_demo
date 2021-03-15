@@ -10,11 +10,6 @@ app = FastAPI(
     description=settings.PROJECT_DESCRIPTION
 )
 
-FAKE_USER_USERNAME = "username"
-FAKE_USER_PASSWORD = "password"
-
-app = FastAPI()
-
 # Redirect all the Validation Errors from FastApi from 422 to 400
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request, exc):

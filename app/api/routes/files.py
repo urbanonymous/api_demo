@@ -20,7 +20,7 @@ security = CustomHTTPBearer()
 def update_current_quota(user_id: str):
     # Filter for valid (recent) downloads
     valid_downloads = [download for download in db["users"][user_id]["last_downloads"] if lambda element: element.timestamp >=
-                       datetime.datetime.now() - datetime.timedelta(minutes=settings.DOWNLOAD_QUOTA_MINUTES)]
+                       datetime.now() - timedelta(minutes=settings.DOWNLOAD_QUOTA_MINUTES)]
     db["users"][user_id]["last_downloads"] = valid_downloads
 
     # Calculate currente allowance

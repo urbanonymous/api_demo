@@ -1,5 +1,7 @@
-# Singleton dict as in memory db
-# Added the hardcoded demo user
+""" Singleton dict as in memory db
+Added the hardcoded demo user as we don't have any account creation endpoints
+"""
+
 from api.config import settings
 
 db = {

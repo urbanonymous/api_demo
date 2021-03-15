@@ -1,5 +1,3 @@
-
-from datetime import datetime, timedelta
 from typing import Any, Union, Optional
 from fastapi import APIRouter, Body, Form, Depends, HTTPException
 from api.schemas.token import Token, TokenInDB
