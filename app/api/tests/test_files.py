@@ -358,7 +358,7 @@ def test_download_share_link_file_not_authenticated(token):
     response = client.get(share_url)
     assert response.status_code == 200
 
-def test_download_share_link_file_not_authenticated(token):
+def test_download_share_link_file_not_authenticated_multiple(token):
     # Upload a file, generate a share link and download it without token two times
 
     file_id = None
