@@ -33,7 +33,7 @@ def update_current_quota(user_id: str):
 
 def add_file_to_db(user_id: str, file: FileInDB):
     # Validate that the current limit of files is less that the demo limit
-    if len(db["users"][user_id]["files"]) == settings.DEMO_USER_MAX_FILES:
+    if len(db["users"][user_id]["files"]) == settings.USER_MAX_FILES:
         # Remove first file if the quota of files is maxed out
         os.remove(db["users"][user_id]["files"][0].route)
         del db["users"][user_id]["files"][0]

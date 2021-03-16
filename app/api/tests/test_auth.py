@@ -69,6 +69,34 @@ def test_token_time_expired():
     assert response.json().get("token")
 
     response = client.get("/me", headers={"Authorization": f"Bearer {response.json().get('token')}"})
-    assert response.status_code == 401, response.json()
+    assert response.status_code == 401
     assert response.json()
     app.dependency_overrides = {}
+
+def test_token_not_quota_expired():
+    response = client.post("/auth", files={"user_id": (None, f"{settings.DEMO_USER_ID}"), "password":(None, f"{settings.DEMO_USER_PASSWORD}")})
+    
+    assert response.status_code == 200
+    assert response.json()
+    assert response.json().get("token")
+
+    for _ in range(settings.ACCESS_TOKEN_EXPIRE_QUOTA):
+        temporal_response = client.get("/me", headers={"Authorization": f"Bearer {response.json().get('token')}"})
+        assert temporal_response.status_code == 200
+        assert temporal_response.json()
+
+def test_token_quota_expired():
+    response = client.post("/auth", files={"user_id": (None, f"{settings.DEMO_USER_ID}"), "password":(None, f"{settings.DEMO_USER_PASSWORD}")})
+    
+    assert response.status_code == 200
+    assert response.json()
+    assert response.json().get("token")
+
+    for _ in range(settings.ACCESS_TOKEN_EXPIRE_QUOTA):
+        temporal_response = client.get("/me", headers={"Authorization": f"Bearer {response.json().get('token')}"})
+        assert temporal_response.status_code == 200
+        assert temporal_response.json()
+    
+    temporal_response = client.get("/me", headers={"Authorization": f"Bearer {response.json().get('token')}"})
+    assert temporal_response.status_code == 401
+    assert temporal_response.json()

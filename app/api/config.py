@@ -8,9 +8,11 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1
     ACCESS_TOKEN_EXPIRE_QUOTA: int = 5
 
+    USER_MAX_FILES: int = 99
+    
     DEMO_USER_ID: str = "username"
     DEMO_USER_PASSWORD: str = "password"
-    DEMO_USER_MAX_FILES: int = 99
+    
     
     DOWNLOAD_QUOTA_TRAFFIC: int = 1024 ** 2 # 1 Megabyte in bytes
     DOWNLOAD_QUOTA_MINUTES: int = 5
