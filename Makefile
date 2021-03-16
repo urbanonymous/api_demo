@@ -4,9 +4,9 @@ API_DEMO_CONTAINER_NAME := api-demo
 API_DEMO_IMAGE_NAME := api-demo
 
 app_root = app
-pkg_src = $(app_root)/app
+pkg_src = $(app_root)/api
 tests_src = $(app_root)/tests
-local_tests_src = $(app_root)/tests/local
+local_tests_src = $(app_root)/api/tests
 
 isort = isort -rc $(pkg_src) $(tests_src)
 black = black $(pkg_src) $(tests_src)
