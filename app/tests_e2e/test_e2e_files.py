@@ -326,7 +326,7 @@ def test_download_share_link_file_authenticated(token):
     share_url = response.json().get("share_url")
 
     # This test also checks that the user is able to download shared files even without quota
-    response = requests.get(share_url, headers={
+    response = requests.get(f"http://localhost{share_url}", headers={
         "Authorization": f"Bearer {token}"})
     assert response.status_code == 200
 
@@ -352,7 +352,7 @@ def test_download_share_link_file_not_authenticated(token):
     assert response.json().get("share_url")
     share_url = response.json().get("share_url")
 
-    response = requests.get(share_url)
+    response = requests.get(f"http://localhost{share_url}")
     assert response.status_code == 200
 
 
@@ -377,9 +377,9 @@ def test_download_share_link_file_not_authenticated_multiple(token):
     assert response.json().get("share_url")
     share_url = response.json().get("share_url")
 
-    response = requests.get(share_url)
+    response = requests.get(f"http://localhost{share_url}")
     assert response.status_code == 200
 
     # The second time it MUST fail
-    response = requests.get(share_url)
+    response = requests.get(f"http://localhost{share_url}")
     assert response.status_code == 404
