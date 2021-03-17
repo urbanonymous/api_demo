@@ -19,7 +19,7 @@ The API has 6 routes:
 - GET /f/:file_id/share - Returns a short URL to download the file.
 - GET /s/:share_url - Returns the file
 
-For more documentation, read the OpenAPI spec at http://localhost:8000/docs
+For more documentation, read the OpenAPI spec at http://localhost:8080/docs
 
 ## Start the API
 
@@ -28,6 +28,7 @@ To start the API you need to execute the following command:
 
 That will build the docker image and start the container at the port `8080`
 
+The api will be located at `http://localhost:8080`
 The default user_id is `username`
 The default password is `password`
 
