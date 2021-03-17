@@ -10,10 +10,11 @@ tests_src = $(app_root)/tests
 isort = isort -rc $(pkg_src) $(tests_src)
 black = black $(pkg_src) $(tests_src)
 flake8 = flake8 $(pkg_src) $(tests_src)
+	
+.PHONY: all
+all: build start
 
-all: 
-	build run
-
+	
 .PHONY: format
 format:
 	$(isort)
@@ -25,23 +26,23 @@ lint:
 
 .PHONY: test-local
 test-local:
-	./scripts/test-local.sh
+	./scripts/test-local
 
 .PHONY: test-e2e
 test-e2e:
-	./scripts/test-e2e.sh
+	./scripts/test-e2e
 
 .PHONY: build
 build:
-	./scripts/build.sh
+	./scripts/build
 
-.PHONY: run
-run:
-	./scripts/run.sh
+.PHONY: start
+start:
+	./scripts/start
 
 .PHONY: stop
 stop:
-	./scripts/stop.sh
+	./scripts/stop
 
 .PHONY: clean
 clean:
