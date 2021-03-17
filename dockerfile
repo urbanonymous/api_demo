@@ -13,8 +13,10 @@ COPY ./app/pyproject.toml ./app/poetry.lock* /app/
 
 # Allow installing dev dependencies to run tests
 ARG TEST_ENV=false
-ARG MAX_WORKERS=1
-ARG LOG_LEVEL=debug
+
+ENV WORKERS_PER_CORE=1
+ENV MAX_WORKERS=1
+ENV LOG_LEVEL=debug
 
 RUN bash -c "if [ $TEST_ENV == 'true' ] ; then poetry install --no-root ; else poetry install --no-root --no-dev ; fi"
 

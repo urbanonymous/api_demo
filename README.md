@@ -21,10 +21,28 @@ The API has 6 routes:
 
 For more documentation, read the OpenAPI spec at http://localhost:8000/docs
 
+## Start the API
+
+To start the API you need to execute the following command:
+`make`
+
+That will build the docker image and start the container at the port `8080`
+
+The default user_id is `username`
+The default password is `password`
+
 ## Run tests
 
-Tests for this project are defined in the tests/ folder.
-TODO:
+Unit tests for this project are defined in the app/api/tests folder.
+End to end tests for this project are defined in the app/tests folder.
+
+Warning: *You first need to start the api with docker*
+
+To run the unit tests, run the following command:
+`make test-local`
+
+To run the e2e tests, run the following command:
+`make test-e2e`
 
 ## Project structure
 
