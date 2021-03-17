@@ -44,6 +44,14 @@ To run the unit tests, run the following command:
 To run the e2e tests, run the following command:
 `make test-e2e`
 
+## Clean environment
+
+To remove the container and images of this API, run the following commands:  
+
+`make stop`
+
+`make clean`
+
 ## Project structure
 
 Files related to application are in the ``app`` directory.

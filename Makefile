@@ -46,7 +46,6 @@ stop:
 
 .PHONY: clean
 clean:
-	docker stop $(API_DEMO_CONTAINER_NAME)
 	docker rmi $(API_DEMO_IMAGE_NAME)
 	rm -rf `find . -name __pycache__`
 	rm -f `find . -type f -name '*.py[co]' `
