@@ -12,9 +12,13 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-
 COPY ./app/pyproject.toml ./app/poetry.lock* /app/
 
 # Allow installing dev dependencies to run tests
-ARG INSTALL_DEV=false
+ARG TEST_ENV=false
+ARG MAX_WORKERS=1
+ARG LOG_LEVEL=debug
+
 RUN bash -c "if [ $TEST_ENV == 'true' ] ; then poetry install --no-root ; else poetry install --no-root --no-dev ; fi"
 
 # Copy the rest of the project
 COPY ./app /app
-ENV PYTHONPATH=/app
+WORKDIR /app/api
+ENV PYTHONPATH=/app/api
