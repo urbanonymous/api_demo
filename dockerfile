@@ -21,4 +21,4 @@ RUN bash -c "if [ $TEST_ENV == 'true' ] ; then poetry install --no-root ; else p
 # Copy the rest of the project
 COPY ./app /app
 WORKDIR /app/api
-ENV PYTHONPATH=/app/api
+ENV PYTHONPATH=/app
