@@ -6,7 +6,6 @@ API_DEMO_IMAGE_NAME := api-demo
 app_root = app
 pkg_src = $(app_root)/api
 tests_src = $(app_root)/tests
-local_tests_src = $(app_root)/api/tests
 
 isort = isort -rc $(pkg_src) $(tests_src)
 black = black $(pkg_src) $(tests_src)
@@ -26,11 +25,11 @@ lint:
 
 .PHONY: test-local
 test-local:
-	pytest $(local_tests_src) --cov=$(pkg_src)
+	./scripts/test-local.sh
 
-.PHONY: test-dev
-test-dev:
-	./scripts/test-dev.sh
+.PHONY: test-e2e
+test-e2e:
+	./scripts/test-e2e.sh
 
 .PHONY: build
 build:

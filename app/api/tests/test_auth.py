@@ -1,5 +1,4 @@
 from fastapi.testclient import TestClient
-from freezegun import freeze_time
 import datetime
 
 from api.main import app
