@@ -1,4 +1,4 @@
-from app.api.config import settings
+from api.config import settings
 
 import datetime
 import requests

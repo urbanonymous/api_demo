@@ -2,7 +2,7 @@ import pytest
 import shutil
 import os
 import requests
-from app.api.config import settings
+from api.config import settings
 import hashlib
 
 
@@ -58,7 +58,7 @@ def test_unauthorized_post_user_file():
 
 def test_authorized_post_user_file(token):
     # Non atomic test as it leaves a file for the user, this API doesn't have a delete method for files
-    with open('./tests/house.jpg', 'rb') as file:
+    with open('./house.jpg', 'rb') as file:
         files = {'file': ("house.jpg", file)}
         response = requests.post(
             "http://localhost/me", headers={"Authorization": f"Bearer {token}"}, files=files)
@@ -85,7 +85,7 @@ def test_authorized_post_duplicated_user_file(token):
     assert temporal_response.json()
     current_files = len(temporal_response.json().get("files"))
 
-    with open('./tests/house.jpg', 'rb') as file:
+    with open('./house.jpg', 'rb') as file:
         files = {'file': ("house1.jpg", file)}
         response = requests.post(
             "http://localhost/me", headers={"Authorization": f"Bearer {token}"}, files=files)
@@ -93,7 +93,7 @@ def test_authorized_post_duplicated_user_file(token):
         assert response.json()
         assert response.json().get("url")
 
-    with open('./tests/house.jpg', 'rb') as file:
+    with open('./house.jpg', 'rb') as file:
         files = {'file': ("house1.jpg", file)}
         response = requests.post(
             "http://localhost/me", headers={"Authorization": f"Bearer {token}"}, files=files)
@@ -123,7 +123,7 @@ def test_authorized_post_user_file_account_limit(token):
     # Upload missing files to reach the limit
     for i in range(settings.USER_MAX_FILES-current_files):
         token = get_token()  # Get a new token on each request to ignore the quota limit
-        with open('./tests/house.jpg', 'rb') as file:
+        with open('./house.jpg', 'rb') as file:
             files = {'file': (f"house_multiple{i}.jpg", file)}
             response = requests.post(
                 "http://localhost/me", headers={"Authorization": f"Bearer {token}"}, files=files)
@@ -140,7 +140,7 @@ def test_authorized_post_user_file_account_limit(token):
         "files")) == settings.USER_MAX_FILES
 
     # Check that the number of files is correct, even after adding one extra file
-    with open('./tests/house.jpg', 'rb') as file:
+    with open('./house.jpg', 'rb') as file:
         files = {'file': ("house_final.jpg", file)}
         response = requests.post(
             "http://localhost/me", headers={"Authorization": f"Bearer {token}"}, files=files)
@@ -173,7 +173,7 @@ def test_unauthorized_get_user_file():
 def test_authorized_get_user_file(token):
     # Upload a file and download it again
     file_id = None
-    with open('./tests/house.jpg', 'rb') as file:
+    with open('./house.jpg', 'rb') as file:
         files = {'file': ("new_house.jpg", file)}
         response = requests.post(
             "http://localhost/me", headers={"Authorization": f"Bearer {token}"}, files=files)
@@ -188,10 +188,10 @@ def test_authorized_get_user_file(token):
         assert response.status_code == 200
         db.downloaded_bytes += sum(len(chunk)
                                    for chunk in response.iter_content(8196))
-        with open('./tests/new_house.jpg', 'wb') as file:
+        with open('./new_house.jpg', 'wb') as file:
             shutil.copyfileobj(response.raw, file)
 
-    assert os.path.isfile("./tests/new_house.jpg")
+    assert os.path.isfile("./new_house.jpg")
 
 
 def test_authorized_get_user_file_checksum(token):
@@ -200,7 +200,7 @@ def test_authorized_get_user_file_checksum(token):
     sent_file_checksum = None
     response_file_checksum = None
 
-    with open('./tests/house.jpg', 'rb') as file:
+    with open('./house.jpg', 'rb') as file:
         sent_file = file.read()  # pylint: disable=unused-variable # This first read is necessary to get a valid checksum
 
         files = {'file': ("new_house.jpg", file)}
@@ -221,14 +221,14 @@ def test_authorized_get_user_file_checksum(token):
         assert response.status_code == 200
         db.downloaded_bytes += sum(len(chunk)
                                    for chunk in response.iter_content(8196))
-        with open('./tests/new_house.jpg', 'wb+') as file:
+        with open('./new_house.jpg', 'wb+') as file:
             shutil.copyfileobj(response.raw, file)
 
-    with open('./tests/new_house.jpg', 'rb') as file:
+    with open('./new_house.jpg', 'rb') as file:
         response_file_checksum = hashlib.md5(file.read()).hexdigest()
         assert response_file_checksum
 
-    assert os.path.isfile("./tests/new_house.jpg")
+    assert os.path.isfile("./new_house.jpg")
 
     # Check that checksums are the same
     assert sent_file_checksum == response_file_checksum
@@ -238,7 +238,7 @@ def test_authorized_get_user_file_quota_limit(token):
     # Upload a file and download it multiple times until reaching the quota limit
 
     file_id = None
-    with open('./tests/house.jpg', 'rb') as file:
+    with open('./house.jpg', 'rb') as file:
         files = {'file': ("house.jpg", file)}
         response = requests.post(
             "http://localhost/me", headers={"Authorization": f"Bearer {token}"}, files=files)
@@ -278,7 +278,7 @@ def test_authorized_generate_user_file_share_link(token):
     # Upload a file and generate a share link
 
     file_id = None
-    with open('./tests/house.jpg', 'rb') as file:
+    with open('./house.jpg', 'rb') as file:
         files = {'file': ("house.jpg", file)}
         response = requests.post(
             "http://localhost/me", headers={"Authorization": f"Bearer {token}"}, files=files)
@@ -308,7 +308,7 @@ def test_download_share_link_file_authenticated(token):
     # Upload a file, generate a share link and download it with token
 
     file_id = None
-    with open('./tests/house.jpg', 'rb') as file:
+    with open('./house.jpg', 'rb') as file:
         files = {'file': ("house.jpg", file)}
         response = requests.post(
             "http://localhost/me", headers={"Authorization": f"Bearer {token}"}, files=files)
@@ -335,7 +335,7 @@ def test_download_share_link_file_not_authenticated(token):
     # Upload a file, generate a share link and download it without token
 
     file_id = None
-    with open('./tests/house.jpg', 'rb') as file:
+    with open('./house.jpg', 'rb') as file:
         files = {'file': ("house.jpg", file)}
         response = requests.post(
             "http://localhost/me", headers={"Authorization": f"Bearer {token}"}, files=files)
@@ -360,7 +360,7 @@ def test_download_share_link_file_not_authenticated_multiple(token):
     # Upload a file, generate a share link and download it without token two times
 
     file_id = None
-    with open('./tests/house.jpg', 'rb') as file:
+    with open('./house.jpg', 'rb') as file:
         files = {'file': ("house.jpg", file)}
         response = requests.post(
             "http://localhost/me", headers={"Authorization": f"Bearer {token}"}, files=files)
