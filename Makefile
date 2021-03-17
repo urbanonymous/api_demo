@@ -26,23 +26,23 @@ lint:
 
 .PHONY: test-local
 test-local:
-	./scripts/test-local
+	bash ./scripts/test-local.sh
 
 .PHONY: test-e2e
 test-e2e:
-	./scripts/test-e2e
+	bash ./scripts/test-e2e.sh
 
 .PHONY: build
 build:
-	./scripts/build
+	bash ./scripts/build.sh
 
 .PHONY: start
 start:
-	./scripts/start
+	bash ./scripts/start.sh
 
 .PHONY: stop
 stop:
-	./scripts/stop
+	bash ./scripts/stop.sh
 
 .PHONY: clean
 clean:
