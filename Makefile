@@ -12,8 +12,8 @@ isort = isort -rc $(pkg_src) $(tests_src)
 black = black $(pkg_src) $(tests_src)
 flake8 = flake8 $(pkg_src) $(tests_src)
 
-.PHONY: all
-all: build run
+all: 
+	build run
 
 .PHONY: format
 format:
@@ -33,15 +33,15 @@ test-dev:
 	./scripts/test-dev.sh
 
 .PHONY: build
-test-dev:
+build:
 	./scripts/build.sh
 
 .PHONY: run
-test-dev:
+run:
 	./scripts/run.sh
 
 .PHONY: stop
-test-dev:
+stop:
 	./scripts/stop.sh
 
 .PHONY: clean
