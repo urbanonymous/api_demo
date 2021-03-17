@@ -3,4 +3,4 @@
 set -e
 set -x
 
-docker exec -it api-demo cd .. & pytest tests_e2e
+docker exec -it api-demo bash -c 'cd .. ; pytest tests_e2e/'
